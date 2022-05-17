@@ -18,13 +18,18 @@ function App() {
     // state direct
     setText(copy);
   };
-  console.log(text);
+  const sort = () => {
+    const copy = [...text];
+    copy.sort();
+    setText(copy);
+  };
 
   return (
     <div className="App">
       <div>
         <h4 className="black-nav">블로그</h4>
       </div>
+      <button onClick={sort}>가나다순 정렬</button>
       <button onClick={change}>글 바꿈</button>
       <div className="list">
         <h4>
