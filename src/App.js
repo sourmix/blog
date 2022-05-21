@@ -7,8 +7,12 @@ function App() {
     "강남 우동맛집",
     "파이썬 독학",
   ]);
-  const [thumb, setThumb] = useState(0);
-  const like = () => setThumb(thumb + 1);
+  const [thumb, setThumb] = useState([0, 0, 0]);
+  // const like = (i) => {
+  //   let copy = [...thumb];
+  //   copy[i] = copy[i] + 1;
+  //   setThumb(copy);
+  // };
   const change = () => {
     // 1. make copy
     const copy = text.slice();
@@ -24,6 +28,8 @@ function App() {
     setText(copy);
   };
 
+  const [modal, setModal] = useState(false);
+
   return (
     <div className="App">
       <div>
@@ -31,7 +37,7 @@ function App() {
       </div>
       <button onClick={sort}>가나다순 정렬</button>
       <button onClick={change}>글 바꿈</button>
-      <div className="list">
+      {/* <div className="list">
         <h4>
           {text[0]} <span onClick={like}>👍</span> {thumb}
         </h4>
@@ -42,9 +48,40 @@ function App() {
         <p>5월 16일 발행</p>
       </div>
       <div className="list">
-        <h4>{text[2]}</h4>
+        <h4 onClick={() => setModal(!modal)}>{text[2]}</h4>
         <p>5월 16일 발행</p>
-      </div>
+      </div> */}
+      {text.map(function (subject, index) {
+        return (
+          <div className="list">
+            <h4 onClick={() => setModal(!modal)}>
+              {text[index]}{" "}
+              <span
+                onClick={() => {
+                  let copy = [...thumb];
+                  copy[index] = copy[index] + 1;
+                  setThumb(copy);
+                }}
+              >
+                👍
+              </span>{" "}
+              {thumb[index]}
+            </h4>
+            <p>5월 16일 발행</p>
+          </div>
+        );
+      })}
+      {modal ? <Modal /> : null}
+    </div>
+  );
+}
+
+function Modal() {
+  return (
+    <div className="modal">
+      <h4>제목</h4>
+      <p>날짜</p>
+      <p>상세내용</p>
     </div>
   );
 }
