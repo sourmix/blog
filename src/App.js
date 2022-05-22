@@ -13,6 +13,7 @@ function App() {
   //   copy[i] = copy[i] + 1;
   //   setThumb(copy);
   // };
+
   const change = () => {
     // 1. make copy
     const copy = text.slice();
@@ -22,13 +23,16 @@ function App() {
     // state direct
     setText(copy);
   };
+
   const sort = () => {
     const copy = [...text];
     copy.sort();
     setText(copy);
   };
 
+  const [title, setTitle] = useState(1);
   const [modal, setModal] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   return (
     <div className="App">
@@ -53,11 +57,17 @@ function App() {
       </div> */}
       {text.map(function (subject, index) {
         return (
-          <div className="list">
-            <h4 onClick={() => setModal(!modal)}>
+          <div className="list" key={index}>
+            <h4
+              onClick={() => {
+                setModal(!modal);
+                setTitle(index);
+              }}
+            >
               {text[index]}{" "}
               <span
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   let copy = [...thumb];
                   copy[index] = copy[index] + 1;
                   setThumb(copy);
@@ -68,20 +78,46 @@ function App() {
               {thumb[index]}
             </h4>
             <p>5월 16일 발행</p>
+            <button
+              onClick={() => {
+                let copy = [...text];
+                copy.splice(index, 1);
+                setText(copy);
+              }}
+            >
+              삭제
+            </button>
           </div>
         );
       })}
-      {modal ? <Modal /> : null}
+      <input
+        type={"text"}
+        onChange={(event) => {
+          setInputValue(event.target.value);
+        }}
+      />
+      <button
+        onClick={() => {
+          let copy = [...text];
+          copy.unshift(inputValue);
+          setText(copy);
+        }}
+      >
+        발행
+      </button>
+
+      {modal ? <Modal subject={text} title={title} onChange={change} /> : null}
     </div>
   );
 }
 
-function Modal() {
+function Modal(props) {
   return (
     <div className="modal">
-      <h4>제목</h4>
+      <h4>{props.subject[props.title]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <button onClick={props.onChange}>글수정</button>
     </div>
   );
 }
