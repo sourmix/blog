@@ -8,9 +8,17 @@ function App() {
     "파이썬 독학",
   ]);
   const [thumb, setThumb] = useState([0, 0, 0]);
-  // const like = (i) => {
+
+  const like = (i) => {
+    let copy = [...thumb];
+    copy[i] = copy[i] + 1;
+    setThumb(copy);
+  };
+
+  // const onClick = (event) => {
+  //   event.stopPropagation();
   //   let copy = [...thumb];
-  //   copy[i] = copy[i] + 1;
+  //   copy[index] = copy[index] + 1;
   //   setThumb(copy);
   // };
 
@@ -66,11 +74,8 @@ function App() {
             >
               {text[index]}{" "}
               <span
-                onClick={(event) => {
-                  event.stopPropagation();
-                  let copy = [...thumb];
-                  copy[index] = copy[index] + 1;
-                  setThumb(copy);
+                onClick={() => {
+                  like(index);
                 }}
               >
                 👍
